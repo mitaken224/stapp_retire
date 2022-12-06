@@ -235,6 +235,7 @@ def main():
             df = copy.deepcopy(st.session_state.df)
 
             # 要約統計量の表示
+            st_display_table(df.describe())
 
             
         else:
@@ -243,6 +244,10 @@ def main():
 
     if choice == 'グラフ表示':
 
+        # サイドメニューの設定
+        # activities = ["データ確認", "要約統計量", "グラフ表示", "学習と検証", "About"]
+        # choice_x = st.sidebar.selectbox("グラフのx軸", activities)
+
         # セッションステートにデータフレームがあるかを確認
         if 'df' in st.session_state:
 
@@ -250,6 +255,7 @@ def main():
             df = copy.deepcopy(st.session_state.df)
 
             # グラフの表示
+            st_display_graph(df, '退職')
 
             
         else:
@@ -271,13 +277,26 @@ def main():
             clf, train_pred, train_scores = ml_dtree(train_X, train_Y, 2)
 
             # 正解率を出力
-
+            st.caption('決定木の予測')
+            st.subheader(f"正解率：{train_scores}")
 
             # 決定木のツリーを出力
-            
+            st.caption('')
+            st.caption('決定木の可視化')
+            st_display_dtree(clf, train_X.columns)
 
         else:
             st.subheader('訓練用データをアップロードしてください')
+
+
+    if choice == 'About':
+        image = Image.open('logo.png')
+        st.image(image)
+
+        #components.html("""""")
+        st.markdown("Built by Yuki Tsuchida")
+        st.text("Version 0.6")
+        st.markdown("For More Information -> check out (https://www.ncc-net.ac.jp/)")
         
 
 if __name__ == "__main__":
